@@ -20,7 +20,7 @@ class CreateEventsTable extends Migration
             $table->integer('no_of_actions');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
-            $table->integer('score');
+            $table->float('score');
             $table->timestamps();
         });
     }

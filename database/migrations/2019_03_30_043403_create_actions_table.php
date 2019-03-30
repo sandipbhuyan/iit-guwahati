@@ -19,6 +19,7 @@ class CreateActionsTable extends Migration
             $table->string('type_of_action');
             $table->dateTime('start_time');
             $table->dateTime('end_time');
+            $table->float('score');
             $table->timestamps();
         });
     }
