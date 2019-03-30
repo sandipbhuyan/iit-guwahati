@@ -25,10 +25,16 @@
                         <tbody>
                         @foreach($events as $event)
                             <tr class="table-primary">
-                                <th scope="row">{{date('d M Y, H:i',strtotime($event->start_time))}}</th>
+
+                                <th scope="row">
+                                    <a href="{{route('action', $event->id)}}">
+                                        {{date('d M Y, H:i',strtotime($event->start_time))}}
+                                    </a>
+                                </th>
                                 <td>{{$event->time_diff}}</td>
                                 <td>{{$event->score}}</td>
                                 <td>{{$event->no_of_actions}}</td>
+
                             </tr>
                         @endforeach
                         </tbody>
