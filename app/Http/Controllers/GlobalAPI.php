@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use App\Events;
 use App\Actions;
+use Illuminate\Validation\Validator;
 
 class GlobalAPI extends Controller
 {
@@ -20,6 +21,10 @@ class GlobalAPI extends Controller
      */
     public function eventStore(Request $request) {
         $event = new Events;
+
+        if($request->main == null) {
+            return response('you cannot send null event', 400);
+        }
 
         $event->name = $request->main['name'];
         $event->start_time = $request->main['start_time'];
