@@ -1,5 +1,24 @@
 @extends('layouts.app')
+@section('headerJs')
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var temp = {!! json_encode($pi_chart) !!};
+            temp.unshift(['Type', 'Amount of Time'])
+            var data = google.visualization.arrayToDataTable(temp);
 
+            var options = {
+                title: 'Actions'
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+@endsection
 @section('content')
     <div class="container">
         <div class="row">
@@ -13,10 +32,6 @@
                         <a href="{{route('home')}}">Go Back</a>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
                     <div class="panel-heading">Action</div>
 
@@ -38,7 +53,7 @@
                             @foreach($actions as $action)
                                 <tr class="table-primary">
                                     <th scope="row">{{$action->type_of_action}}</th>
-                                    <td>{{$action->time_diff}}</td>
+                                    <td>{{$action->time_diff}} mins</td>
                                     <td>{{$event->score}}</td>
                                 </tr>
                             @endforeach
@@ -46,6 +61,17 @@
                         </table>
                     </div>
                 </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">Pichart for action</div>
+
+                    <div class="panel-body">
+                        <div id="piechart" style="width: 100%; height: 100%;"></div>
+                        <p class="{{ $key == 0 ? 'text-success': 'text-danger' }} col-md-offset-2"><b>{{$tip}}</b></p>
+                    </div>
+
+                </div>
             </div>
         </div>
+    </div>
 @endsection
+

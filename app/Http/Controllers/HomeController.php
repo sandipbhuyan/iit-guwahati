@@ -50,15 +50,54 @@ class HomeController extends Controller
     {
         $actions = Actions::where('e_id', $id)->get();
         $event = Events::find($id);
-
+        $good = 0;
+        $back = 0;
+        $text = 0;
+        $call = 0;
+        $tip = '';
         foreach ($actions as $action)
         {
             $action->time_diff = $this->calculateTimeDiff($action->start_time, $action->end_time);
-            var_dump($action->time_diff);
+            if($action->type_of_action == 'good')
+            {
+                $good += $action->time_diff;
+            }
+            if($action->type_of_action == 'back')
+            {
+                $back  += $action->time_diff;
+            }
+            if($action->type_of_action == 'call')
+            {
+                $call += $action->time_diff;
+            }
+            if($action->type_of_action == 'text')
+            {
+                $text += $action->time_diff;
+            }
+        }
+        $temp = [$good,$back,$text,$call];
+        $key = array_keys($temp,max($temp));
+        if($key[0] == 0) {
+            $tip = 'Your driving skill is improving';
+        }
+        else if($key[0] == 1) {
+            $tip = 'You are verymuch distracted from the road. Pay attention a little more to the road';
+        }
+        else if($key[0] == 2 || $key == 3) {
+            $tip = 'You are using the phone very much';
         }
 
+        $pi_chart = [
+            ['Good Driving', $good],
+            ['Looking Back', $back],
+            ['Texting in phone', $text],
+            ['Spending in Call', $call]
+        ];
         return view('action')->with('actions', $actions)
-                                    ->with('event', $event);
+                                    ->with('event', $event)
+                                    ->with('pi_chart',$pi_chart)
+                                    ->with('tip', $tip)
+                                    ->with('key', $key[0]);
     }
 
     /**
@@ -71,10 +110,8 @@ class HomeController extends Controller
      */
     private function calculateTimeDiff($start, $end)
     {
-        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $start);
-        $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $end);
-        var_dump($start);
-        var_dump($end);
+        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $start);
+        $from = \Carbon\Carbon::createFromFormat('Y-m-d H:i:s', $end);
         return $to->diffInMinutes($from);
     }
 }

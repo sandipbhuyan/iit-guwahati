@@ -32,7 +32,7 @@
                                     </a>
                                 </th>
                                 <th>{{$event->name}}</th>
-                                <td>{{$event->time_diff}}</td>
+                                <td>{{$event->time_diff}} mins</td>
                                 <td>{{$event->score}}</td>
                                 <td>{{$event->no_of_actions}}</td>
 

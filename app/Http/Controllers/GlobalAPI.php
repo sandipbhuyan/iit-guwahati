@@ -20,11 +20,15 @@ class GlobalAPI extends Controller
      */
     public function eventStore(Request $request) {
         $event = new Events;
+        if($request->main == null)
+        {
+            return response('Can\'t store value',400);
+        }
 
         $event->name = $request->main['name'];
         $event->start_time = $request->main['start_time'];
         $event->end_time = $request->main['end_time'];
-        $event->no_of_actions = $request->main['no_of_action'];
+        $event->no_of_actions = $request->main['no_of_actions'];
         $event->u_id = $request->main['u_id'];
         $event->score = $request->main['score'];
         $event->save();
