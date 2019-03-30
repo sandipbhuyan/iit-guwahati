@@ -17,6 +17,7 @@
                         <thead>
                         <tr>
                             <th scope="col">Session on</th>
+                            <th scope="col">Name</th>
                             <th scope="col">Time of travel</th>
                             <th scope="col">Score</th>
                             <th scope="col">Number of Faults</th>
@@ -25,12 +26,12 @@
                         <tbody>
                         @foreach($events as $event)
                             <tr class="table-primary">
-
                                 <th scope="row">
                                     <a href="{{route('action', $event->id)}}">
                                         {{date('d M Y, H:i',strtotime($event->start_time))}}
                                     </a>
                                 </th>
+                                <th>{{$event->name}}</th>
                                 <td>{{$event->time_diff}}</td>
                                 <td>{{$event->score}}</td>
                                 <td>{{$event->no_of_actions}}</td>
