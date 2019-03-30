@@ -41,6 +41,10 @@ class HomeController extends Controller
 
 
     /**
+     * Action details
+     *
+     * Send Action details of a perticular event and visuzlization values
+     *
      * @param Request $request
      * @param $id
      *
