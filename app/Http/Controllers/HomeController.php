@@ -29,11 +29,7 @@ class HomeController extends Controller
         $events = Events::where('u_id',Auth::user()->id)->get();
 
         foreach ($events as $event) {
-            $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $event->start_time);
-            $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $event->end_time);
-
-            $diff_in_minutes = $to->diffInMinutes($from);
-            $event->time_diff = $diff_in_minutes;
+            $event->time_diff = $this->calculateTimeDiff($event->start_time, $event->end_time);
         }
 
         return view('home')->with('events', $events);
@@ -48,6 +44,7 @@ class HomeController extends Controller
      * @param Request $request
      * @param $id
      *
+     * @return \Illuminate\Http\Response
      */
     public function actionDetails(Request $request, $id)
     {
@@ -56,14 +53,28 @@ class HomeController extends Controller
 
         foreach ($actions as $action)
         {
-            $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $action->start_time);
-            $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $action->end_time);
-
-            $diff_in_minutes = $to->diffInMinutes($from);
-            $action->time_diff = $diff_in_minutes;
+            $action->time_diff = $this->calculateTimeDiff($action->start_time, $action->end_time);
+            var_dump($action->time_diff);
         }
 
         return view('action')->with('actions', $actions)
                                     ->with('event', $event);
+    }
+
+    /**
+     * Calculate Time Diff
+     *
+     * @param $start
+     * @param $end
+     *
+     * @return int
+     */
+    private function calculateTimeDiff($start, $end)
+    {
+        $to = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $start);
+        $from = \Carbon\Carbon::createFromFormat('Y-m-d H:s:i', $end);
+        var_dump($start);
+        var_dump($end);
+        return $to->diffInMinutes($from);
     }
 }
