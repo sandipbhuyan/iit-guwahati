@@ -28,11 +28,18 @@ class HomeController extends Controller
     {
         $events = Events::where('u_id',Auth::user()->id)->get();
 
+        $score_time = [];
+        $faults_time = [];
+
         foreach ($events as $event) {
             $event->time_diff = $this->calculateTimeDiff($event->start_time, $event->end_time);
+            array_push($score_time, [date('d-m-Y',strtotime($event->start_time)),$event->score]);
+            array_push($faults_time,[date('d-m-Y',strtotime($event->start_time)),$event->no_of_actions]);
         }
 
-        return view('home')->with('events', $events);
+        return view('home')->with('events', $events)
+                                ->with('score_time',$score_time)
+                                ->with('fault_time',$faults_time);
     }
 
 

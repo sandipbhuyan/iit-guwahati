@@ -65,7 +65,7 @@
                     <div class="panel-heading">Pichart for action</div>
 
                     <div class="panel-body">
-                        <div id="piechart" style="width: 100%; height: 100%;"></div>
+                        <div id="piechart" style="width: 100%;height: 500px"></div>
                         <p class="{{ $key == 0 ? 'text-success': 'text-danger' }} col-md-offset-2"><b>{{$tip}}</b></p>
                     </div>
 
