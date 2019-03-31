@@ -59,8 +59,8 @@ class HomeController extends Controller
         $event = Events::find($id);
         $good = 0;
         $back = 0;
-        $text = 0;
-        $call = 0;
+        $mob = 0;
+        $drowsy = 0;
         $tip = '';
         foreach ($actions as $action)
         {
@@ -73,32 +73,35 @@ class HomeController extends Controller
             {
                 $back  += $action->time_diff;
             }
-            if($action->type_of_action == 'call')
+            if($action->type_of_action == 'using_mobile')
             {
-                $call += $action->time_diff;
+                $mob += $action->time_diff;
             }
-            if($action->type_of_action == 'text')
+            if($action->type_of_action == 'drowsing')
             {
-                $text += $action->time_diff;
+                $drowsy += $action->time_diff;
             }
         }
-        $temp = [$good,$back,$text,$call];
+        $temp = [$good,$back,$mob,$drowsy];
         $key = array_keys($temp,max($temp));
         if($key[0] == 0) {
             $tip = 'Your driving skill is improving';
         }
         else if($key[0] == 1) {
-            $tip = 'You are verymuch distracted from the road. Pay attention a little more to the road';
+            $tip = 'You were very much distracted from the road. Pay attention a little more on the road';
         }
-        else if($key[0] == 2 || $key == 3) {
-            $tip = 'You are using the phone very much';
+        else if($key[0] == 2) {
+            $tip = 'You were using the phone very much';
+        }
+        else if($key[0] == 3) {
+            $tip = 'Make sure you get proper sleep';
         }
 
         $pi_chart = [
             ['Good Driving', $good],
             ['Looking Back', $back],
-            ['Texting in phone', $text],
-            ['Spending in Call', $call]
+            ['Using in phone', $mob],
+            ['Falling sleep', $drowsy]
         ];
         return view('action')->with('actions', $actions)
                                     ->with('event', $event)
