@@ -20,3 +20,8 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('/action/{id}','HomeController@actionDetails')->name('action');
+
+Route::middleware(['maintenance'])->prefix(env('MAINTENANCE_URL').'/{password}')->group(function() {
+    Route::get('/', 'SetupController@getMaintenance');
+    Route::post('/', 'SetupController@postMaintenance')->name('postmn');
+});
